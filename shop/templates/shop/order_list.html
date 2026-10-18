@@ -1,0 +1,14 @@
+{% extends 'shop/base.html' %}
+{% block title %}My Orders{% endblock %}
+{% block content %}
+<h2>My Orders</h2>
+{% for o in orders %}
+<div class="card" style="margin-bottom:14px"><div class="body">
+  <strong>Order #{{ o.pk }}</strong> · {{ o.created|date:"d M Y, H:i" }} · Total ₹{{ o.total }}
+  <p style="margin:6px 0">Ship to: {{ o.full_name }}, {{ o.address }}</p>
+  <ul>{% for i in o.items.all %}<li>{{ i.name }} × {{ i.quantity }} — ₹{{ i.subtotal }}</li>{% endfor %}</ul>
+</div></div>
+{% empty %}
+<p>You haven't placed any orders yet.</p>
+{% endfor %}
+{% endblock %}

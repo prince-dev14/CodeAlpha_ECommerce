@@ -1,0 +1,20 @@
+{% extends 'shop/base.html' %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+<div class="card" style="display:flex;flex-wrap:wrap">
+  <div style="flex:1 1 300px">{% if product.image_url %}<img src="{{ product.image_url }}" alt="{{ product.name }}" style="height:100%;min-height:240px">{% endif %}</div>
+  <div class="body" style="flex:1 1 300px;padding:24px">
+    <h2>{{ product.name }}</h2>
+    <p>{{ product.description }}</p>
+    <p class="price" style="font-size:1.4rem">₹{{ product.price }}</p>
+    <p>{% if product.stock > 0 %}{{ product.stock }} in stock{% else %}Out of stock{% endif %}</p>
+    {% if product.stock > 0 %}
+    <form method="post" action="{% url 'cart_add' product.pk %}" style="display:flex;gap:8px;align-items:center">
+      {% csrf_token %}
+      <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}">
+      <button class="btn" type="submit">Add to Cart</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

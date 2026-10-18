@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}CodeAlpha Store{% endblock %}</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial,sans-serif;background:#f5f6fa;color:#222}
+a{color:#4a47d6;text-decoration:none}
+nav{background:#1f1f3d;color:#fff;padding:12px 24px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+nav a,nav button{color:#fff;background:none;border:0;font-size:1rem;cursor:pointer;padding:0}
+nav .brand{font-weight:700;font-size:1.2rem;margin-right:auto}
+main{max-width:1000px;margin:24px auto;padding:0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.card{background:#fff;border-radius:10px;box-shadow:0 1px 4px #0002;overflow:hidden}
+.card img{width:100%;height:150px;object-fit:cover;background:#ddd}
+.card .body{padding:12px}
+.price{font-weight:700;color:#0a7a3d}
+.btn{background:#4a47d6;color:#fff;border:0;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:.95rem}
+.btn.red{background:#c0392b}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #eee}
+input,textarea{padding:8px;border:1px solid #ccc;border-radius:6px;width:100%;font-family:inherit}
+input[type=number]{width:70px}
+.box{background:#fff;padding:20px;border-radius:10px;box-shadow:0 1px 4px #0002;max-width:480px}
+.msg{padding:10px 14px;border-radius:6px;margin-bottom:10px;background:#e8f0fe}
+.msg.success{background:#d4f5e0}.msg.error{background:#fddede}.msg.warning{background:#fff3cd}
+.errorlist{color:#c0392b;padding-left:18px}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="{% url 'product_list' %}">🛒 CodeAlpha Store</a>
+  <a href="{% url 'product_list' %}">Products</a>
+  <a href="{% url 'cart' %}">Cart ({{ cart_count }})</a>
+  {% if user.is_authenticated %}
+    <a href="{% url 'order_list' %}">My Orders</a>
+    <span>Hi, {{ user.username }}</span>
+    <form method="post" action="{% url 'logout' %}" style="margin:0">{% csrf_token %}<button type="submit">Logout</button></form>
+  {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'register' %}">Register</a>
+  {% endif %}
+</nav>
+<main>
+  {% for m in messages %}<div class="msg {{ m.tags }}">{{ m }}</div>{% endfor %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

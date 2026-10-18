@@ -1,0 +1,21 @@
+{% extends 'shop/base.html' %}
+{% block content %}
+<form method="get" style="display:flex;gap:8px;margin-bottom:18px">
+  <input type="text" name="q" value="{{ q }}" placeholder="Search products...">
+  <button class="btn" type="submit">Search</button>
+</form>
+<div class="grid">
+{% for p in products %}
+  <div class="card">
+    {% if p.image_url %}<img src="{{ p.image_url }}" alt="{{ p.name }}">{% else %}<img alt="">{% endif %}
+    <div class="body">
+      <h3 style="margin:0 0 6px"><a href="{% url 'product_detail' p.pk %}">{{ p.name }}</a></h3>
+      <div class="price">₹{{ p.price }}</div>
+      <small>{% if p.stock > 0 %}In stock{% else %}Out of stock{% endif %}</small>
+    </div>
+  </div>
+{% empty %}
+  <p>No products found. Run <code>python manage.py seed</code> or add products in /admin.</p>
+{% endfor %}
+</div>
+{% endblock %}
